@@ -1,0 +1,7 @@
+git init
+git add . all
+git commit -m "commit comment"
+git remote add origin https://github.com/GlebZigert/modul.git
+git push -u origin master
+
+git clone URL
