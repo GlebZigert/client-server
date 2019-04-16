@@ -12,8 +12,9 @@ int main(void)
 {
 printf("[Server]\n");
 
-int socket_desc, client_sock, c;
+int socket_desc, client_sock, c, read_size;
 struct sockaddr_in server, client;
+char client_message[2000];
 //create socket
 socket_desc = socket(AF_INET, SOCK_STREAM, 0);
 if (socket_desc == -1)
@@ -51,6 +52,22 @@ if (client_sock < 0)
 		return 1;
 	}
 printf("[Server]Connection accepted\n");
+
+while( (read_size = recv(client_sock , client_message , 2000 , 0)) > 0 )
+	{
+		//Send the message back to client
+		write(client_sock , client_message , strlen(client_message));
+	}
+	
+	if(read_size == 0)
+	{
+		puts("[Server]Client disconnected");
+		fflush(stdout);
+	}
+	else if(read_size == -1)
+	{
+		perror("[Server]recv failed");
+	}
 
 return 0;
 }

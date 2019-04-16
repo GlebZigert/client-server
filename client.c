@@ -13,7 +13,7 @@ int main(void)
 printf("[Client]\n");
 int sock;
 struct sockaddr_in server;
-
+char message[1000] , server_reply[2000];
 //Create socket
 sock = socket(AF_INET , SOCK_STREAM , 0);
 	if (sock == -1)
@@ -34,6 +34,31 @@ server.sin_port = htons( 8888 );
 	}
 	
 	printf("[Client] Connected\n");
+
+while(1)
+	{
+		printf("[Client]Enter message : ");
+		scanf("%s" , message);
+		
+		//Send some data
+		if( send(sock , message , strlen(message) , 0) < 0)
+		{
+			puts("[Client]Send failed");
+			return 1;
+		}
+		
+		//Receive a reply from the server
+		if( recv(sock , server_reply , 2000 , 0) < 0)
+		{
+			puts("[Client]recv failed");
+			break;
+		}
+		
+		puts("[Client]Server reply :");
+		puts(server_reply);
+	}
+	
+	close(sock);
 
 return 0;
 }
